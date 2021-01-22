@@ -6,6 +6,7 @@
 //
 
 import Apodini
+import Foundation
 
 struct GRPCDemoService: Apodini.WebService {
     struct TraditionalGreeter: Handler {
@@ -31,9 +32,18 @@ struct GRPCDemoService: Apodini.WebService {
 
     var content: some Component {
         Group("swift") {
-            Text("Hello World! 👋")
+            TraditionalGreeter()
                 .serviceName("GreetService")
                 .rpcName("greetMe")
+        }
+    }
+
+    var configuration: Configuration {
+        if let cert = Bundle.module.path(forResource: "cert", ofType: "pem"),
+           let key = Bundle.module.path(forResource: "key", ofType: "pem") {
+            HTTP2Configuration()
+                .certificate(cert)
+                .key(key)
         }
     }
 }

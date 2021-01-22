@@ -19,6 +19,9 @@ let package = Package(
             name: "server",
             dependencies: [
                 .product(name: "Apodini", package: "Apodini")
+            ],
+            resources: [
+                .process("cert")
             ]
         ),
         .testTarget(
