@@ -1,0 +1,15 @@
+syntax="proto3";
+
+message GreetRequest {
+    string gender = 1;
+    string surname = 2;
+    string name = 3;
+}
+
+message GreetResponse {
+    repeated string content = 1;
+}
+
+service GreetService {
+    rpc greetMe(GreetRequest) returns (GreetResponse);
+}
