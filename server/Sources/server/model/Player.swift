@@ -21,7 +21,7 @@ enum Symbol: String {
 
 struct Player {
     let symbol: Symbol
-    let id: Int
+    let id: Int32
     let name: String
 }
 

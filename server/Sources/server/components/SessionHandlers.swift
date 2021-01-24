@@ -14,11 +14,11 @@ import Apodini
 /// The id of the session that the user joined will be returned.
 struct JoinSession: Handler {
     @Parameter
-    var userId: Int
+    var userId: Int32
     @Parameter
     var userName: String
 
-    func handle() -> Int {
+    func handle() -> Int32 {
         let session = GameSession.OpenSessions
             .filter { $0.second != nil }
             .first
@@ -41,7 +41,7 @@ struct JoinSession: Handler {
 /// Allows to poll whether the session with the given id has already two players.
 struct PollSession: Handler {
     @Parameter
-    var sessionId: Int
+    var sessionId: Int32
 
     func handle() -> Bool {
         guard let session = GameSession.OpenSessions

@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import NIO
+import GRPC
 
 enum Player: String {
     case circle = "O"
@@ -255,8 +257,46 @@ struct Field: View {
 }
 
 struct ContentView: View {
+    func startUp() {
+        let address = "localhost"
+        let port = 8080
+
+        let group = MultiThreadedEventLoopGroup(numberOfThreads: 1)
+        defer {
+            try! group.syncShutdownGracefully()
+        }
+
+        let channel = ClientConnection
+            .secure(group: group)
+            .withTLS(certificateVerification: .none)
+            .connect(host: address, port: port)
+
+        let sessionClient = V1SessionServiceClient(channel: channel)
+
+        var joinMessage = JoinMessage()
+        joinMessage.userID = 15
+        joinMessage.userName = "Moritz"
+
+        let request = sessionClient.join(joinMessage)
+        request.response.whenComplete() { result in
+            switch result {
+            case let .success(response):
+                print("Received response: \(response)")
+            case let .failure(error):
+                print("Error during request: \(error)")
+            }
+        }
+
+        do {
+            try request.status.wait()
+        } catch {
+
+        }
+    }
+
     var body: some View {
         Board()
             .environmentObject(Model())
+            .onAppear(perform: startUp)
     }
 }

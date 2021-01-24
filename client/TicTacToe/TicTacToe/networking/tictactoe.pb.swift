@@ -25,7 +25,7 @@ public struct JoinMessage {
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  public var userID: Int64 = 0
+  public var userID: Int32 = 0
 
   public var userName: String = String()
 
@@ -39,7 +39,7 @@ public struct JoinResponse {
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  public var sessionID: Int64 = 0
+  public var sessionID: Int32 = 0
 
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -51,7 +51,7 @@ public struct PollMessage {
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  public var sessionID: Int64 = 0
+  public var sessionID: Int32 = 0
 
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -75,11 +75,11 @@ public struct MoveMessage {
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  public var userID: Int64 = 0
+  public var userID: Int32 = 0
 
-  public var sessionID: Int64 = 0
+  public var sessionID: Int32 = 0
 
-  public var position: Int64 = 0
+  public var position: Int32 = 0
 
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -113,7 +113,7 @@ extension JoinMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementati
       // allocates stack space for every case branch when no optimizations are
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
-      case 1: try { try decoder.decodeSingularInt64Field(value: &self.userID) }()
+      case 1: try { try decoder.decodeSingularInt32Field(value: &self.userID) }()
       case 2: try { try decoder.decodeSingularStringField(value: &self.userName) }()
       default: break
       }
@@ -122,7 +122,7 @@ extension JoinMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementati
 
   public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
     if self.userID != 0 {
-      try visitor.visitSingularInt64Field(value: self.userID, fieldNumber: 1)
+      try visitor.visitSingularInt32Field(value: self.userID, fieldNumber: 1)
     }
     if !self.userName.isEmpty {
       try visitor.visitSingularStringField(value: self.userName, fieldNumber: 2)
@@ -150,7 +150,7 @@ extension JoinResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementat
       // allocates stack space for every case branch when no optimizations are
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
-      case 1: try { try decoder.decodeSingularInt64Field(value: &self.sessionID) }()
+      case 1: try { try decoder.decodeSingularInt32Field(value: &self.sessionID) }()
       default: break
       }
     }
@@ -158,7 +158,7 @@ extension JoinResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementat
 
   public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
     if self.sessionID != 0 {
-      try visitor.visitSingularInt64Field(value: self.sessionID, fieldNumber: 1)
+      try visitor.visitSingularInt32Field(value: self.sessionID, fieldNumber: 1)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
@@ -182,7 +182,7 @@ extension PollMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementati
       // allocates stack space for every case branch when no optimizations are
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
-      case 1: try { try decoder.decodeSingularInt64Field(value: &self.sessionID) }()
+      case 1: try { try decoder.decodeSingularInt32Field(value: &self.sessionID) }()
       default: break
       }
     }
@@ -190,7 +190,7 @@ extension PollMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementati
 
   public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
     if self.sessionID != 0 {
-      try visitor.visitSingularInt64Field(value: self.sessionID, fieldNumber: 1)
+      try visitor.visitSingularInt32Field(value: self.sessionID, fieldNumber: 1)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
@@ -248,9 +248,9 @@ extension MoveMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementati
       // allocates stack space for every case branch when no optimizations are
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
-      case 1: try { try decoder.decodeSingularInt64Field(value: &self.userID) }()
-      case 2: try { try decoder.decodeSingularInt64Field(value: &self.sessionID) }()
-      case 3: try { try decoder.decodeSingularInt64Field(value: &self.position) }()
+      case 1: try { try decoder.decodeSingularInt32Field(value: &self.userID) }()
+      case 2: try { try decoder.decodeSingularInt32Field(value: &self.sessionID) }()
+      case 3: try { try decoder.decodeSingularInt32Field(value: &self.position) }()
       default: break
       }
     }
@@ -258,13 +258,13 @@ extension MoveMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementati
 
   public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
     if self.userID != 0 {
-      try visitor.visitSingularInt64Field(value: self.userID, fieldNumber: 1)
+      try visitor.visitSingularInt32Field(value: self.userID, fieldNumber: 1)
     }
     if self.sessionID != 0 {
-      try visitor.visitSingularInt64Field(value: self.sessionID, fieldNumber: 2)
+      try visitor.visitSingularInt32Field(value: self.sessionID, fieldNumber: 2)
     }
     if self.position != 0 {
-      try visitor.visitSingularInt64Field(value: self.position, fieldNumber: 3)
+      try visitor.visitSingularInt32Field(value: self.position, fieldNumber: 3)
     }
     try unknownFields.traverse(visitor: &visitor)
   }

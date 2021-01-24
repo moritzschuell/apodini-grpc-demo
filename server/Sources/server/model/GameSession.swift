@@ -18,16 +18,16 @@ enum Field {
 }
 
 struct GameSession {
-    let id: Int
+    let id: Int32
     var field: [Field]
     let first: Player
     var second: Player? = nil
     var moves: [Move]
 
     static var OpenSessions: [GameSession] = []
-    static var SessionCounter: Int = 0
+    static var SessionCounter: Int32 = 0
 
-    init(id: Int, first: Player) {
+    init(id: Int32, first: Player) {
         field = [
             .unset, .unset, .unset,
             .unset, .unset, .unset,
@@ -56,7 +56,7 @@ struct GameSession {
         if move.position >= field.count || move.position < 0 {
             // field does not exist
             return false
-        } else if field[move.position] != .unset {
+        } else if field[Int(move.position)] != .unset {
             // field already blocked
             return false
         } else if try next() != move.player {

@@ -1,16 +1,16 @@
 syntax="proto3";
 
 message JoinMessage {
-    int64 userId = 1;
+    int32 userId = 1;
     string userName = 2;
 }
 
 message JoinResponse {
-    int64 sessionId = 1;
+    int32 sessionId = 1;
 }
 
 message PollMessage {
-    int64 sessionId = 1;
+    int32 sessionId = 1;
 }
 
 message PollResponse {
@@ -23,9 +23,9 @@ service V1SessionService {
 }
 
 message MoveMessage {
-    int64 userId = 1;
-    int64 sessionId = 2;
-    int64 position = 3;
+    int32 userId = 1;
+    int32 sessionId = 2;
+    int32 position = 3;
 }
 
 message MoveResponse {

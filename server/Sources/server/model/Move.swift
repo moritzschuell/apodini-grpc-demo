@@ -9,5 +9,5 @@ import Foundation
 
 struct Move {
     let player: Player
-    let position: Int
+    let position: Int32
 }

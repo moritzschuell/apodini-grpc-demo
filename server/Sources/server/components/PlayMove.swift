@@ -12,11 +12,11 @@ import Apodini
 /// Returns TRUE if the move was played successfully, false otherwise
 struct PlayMove: Handler {
     @Parameter
-    var userId: Int
+    var userId: Int32
     @Parameter
-    var sessionId: Int
+    var sessionId: Int32
     @Parameter
-    var position: Int
+    var position: Int32
 
     func handle() throws -> Bool {
         guard var session = GameSession.OpenSessions.first(where: { $0.id == sessionId }) else {
