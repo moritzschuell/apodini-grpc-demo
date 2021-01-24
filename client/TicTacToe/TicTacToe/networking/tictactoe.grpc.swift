@@ -25,40 +25,106 @@ import NIO
 import SwiftProtobuf
 
 
-/// Usage: instantiate GreetServiceClient, then call methods of this protocol to make API calls.
-public protocol GreetServiceClientProtocol: GRPCClient {
-  func greetMe(
-    _ request: GreetRequest,
+/// Usage: instantiate V1SessionServiceClient, then call methods of this protocol to make API calls.
+public protocol V1SessionServiceClientProtocol: GRPCClient {
+  func join(
+    _ request: JoinMessage,
     callOptions: CallOptions?
-  ) -> UnaryCall<GreetRequest, GreetResponse>
+  ) -> UnaryCall<JoinMessage, JoinResponse>
+
+  func poll(
+    _ request: PollMessage,
+    callOptions: CallOptions?
+  ) -> UnaryCall<PollMessage, PollResponse>
 
 }
 
-extension GreetServiceClientProtocol {
+extension V1SessionServiceClientProtocol {
 
-  /// Unary call to greetMe
+  /// Unary call to join
   ///
   /// - Parameters:
-  ///   - request: Request to send to greetMe.
+  ///   - request: Request to send to join.
   ///   - callOptions: Call options.
   /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
-  public func greetMe(
-    _ request: GreetRequest,
+  public func join(
+    _ request: JoinMessage,
     callOptions: CallOptions? = nil
-  ) -> UnaryCall<GreetRequest, GreetResponse> {
+  ) -> UnaryCall<JoinMessage, JoinResponse> {
     return self.makeUnaryCall(
-      path: "/GreetService/greetMe",
+      path: "/V1SessionService/join",
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions
+    )
+  }
+
+  /// Unary call to poll
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to poll.
+  ///   - callOptions: Call options.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  public func poll(
+    _ request: PollMessage,
+    callOptions: CallOptions? = nil
+  ) -> UnaryCall<PollMessage, PollResponse> {
+    return self.makeUnaryCall(
+      path: "/V1SessionService/poll",
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions
     )
   }
 }
 
-public final class GreetServiceClient: GreetServiceClientProtocol {
+public final class V1SessionServiceClient: V1SessionServiceClientProtocol {
   public let channel: GRPCChannel
   public var defaultCallOptions: CallOptions
 
-  /// Creates a client for the GreetService service.
+  /// Creates a client for the V1SessionService service.
+  ///
+  /// - Parameters:
+  ///   - channel: `GRPCChannel` to the service host.
+  ///   - defaultCallOptions: Options to use for each service call if the user doesn't provide them.
+  public init(channel: GRPCChannel, defaultCallOptions: CallOptions = CallOptions()) {
+    self.channel = channel
+    self.defaultCallOptions = defaultCallOptions
+  }
+}
+
+/// Usage: instantiate V1PlayServiceClient, then call methods of this protocol to make API calls.
+public protocol V1PlayServiceClientProtocol: GRPCClient {
+  func playmove(
+    _ request: MoveMessage,
+    callOptions: CallOptions?
+  ) -> UnaryCall<MoveMessage, MoveResponse>
+
+}
+
+extension V1PlayServiceClientProtocol {
+
+  /// Unary call to playmove
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to playmove.
+  ///   - callOptions: Call options.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  public func playmove(
+    _ request: MoveMessage,
+    callOptions: CallOptions? = nil
+  ) -> UnaryCall<MoveMessage, MoveResponse> {
+    return self.makeUnaryCall(
+      path: "/V1PlayService/playmove",
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions
+    )
+  }
+}
+
+public final class V1PlayServiceClient: V1PlayServiceClientProtocol {
+  public let channel: GRPCChannel
+  public var defaultCallOptions: CallOptions
+
+  /// Creates a client for the V1PlayService service.
   ///
   /// - Parameters:
   ///   - channel: `GRPCChannel` to the service host.
@@ -70,21 +136,53 @@ public final class GreetServiceClient: GreetServiceClientProtocol {
 }
 
 /// To build a server, implement a class that conforms to this protocol.
-public protocol GreetServiceProvider: CallHandlerProvider {
-  func greetMe(request: GreetRequest, context: StatusOnlyCallContext) -> EventLoopFuture<GreetResponse>
+public protocol V1SessionServiceProvider: CallHandlerProvider {
+  func join(request: JoinMessage, context: StatusOnlyCallContext) -> EventLoopFuture<JoinResponse>
+  func poll(request: PollMessage, context: StatusOnlyCallContext) -> EventLoopFuture<PollResponse>
 }
 
-extension GreetServiceProvider {
-  public var serviceName: Substring { return "GreetService" }
+extension V1SessionServiceProvider {
+  public var serviceName: Substring { return "V1SessionService" }
 
   /// Determines, calls and returns the appropriate request handler, depending on the request's method.
   /// Returns nil for methods not handled by this service.
   public func handleMethod(_ methodName: Substring, callHandlerContext: CallHandlerContext) -> GRPCCallHandler? {
     switch methodName {
-    case "greetMe":
+    case "join":
       return CallHandlerFactory.makeUnary(callHandlerContext: callHandlerContext) { context in
         return { request in
-          self.greetMe(request: request, context: context)
+          self.join(request: request, context: context)
+        }
+      }
+
+    case "poll":
+      return CallHandlerFactory.makeUnary(callHandlerContext: callHandlerContext) { context in
+        return { request in
+          self.poll(request: request, context: context)
+        }
+      }
+
+    default: return nil
+    }
+  }
+}
+
+/// To build a server, implement a class that conforms to this protocol.
+public protocol V1PlayServiceProvider: CallHandlerProvider {
+  func playmove(request: MoveMessage, context: StatusOnlyCallContext) -> EventLoopFuture<MoveResponse>
+}
+
+extension V1PlayServiceProvider {
+  public var serviceName: Substring { return "V1PlayService" }
+
+  /// Determines, calls and returns the appropriate request handler, depending on the request's method.
+  /// Returns nil for methods not handled by this service.
+  public func handleMethod(_ methodName: Substring, callHandlerContext: CallHandlerContext) -> GRPCCallHandler? {
+    switch methodName {
+    case "playmove":
+      return CallHandlerFactory.makeUnary(callHandlerContext: callHandlerContext) { context in
+        return { request in
+          self.playmove(request: request, context: context)
         }
       }
 

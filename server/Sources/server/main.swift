@@ -9,32 +9,17 @@ import Apodini
 import Foundation
 
 struct GRPCDemoService: Apodini.WebService {
-    struct TraditionalGreeter: Handler {
-        @Parameter var gender: String
-        @Parameter var surname: String = ""
-        @Parameter var name: String?
-
-        @Environment(\.connection) var connection: Connection
-
-        func handle() -> Response<String> {
-            print(connection.state)
-            if connection.state == .end {
-                return .final("This is the end")
-            }
-
-            if let firstName = name {
-                return .send("Hi, \(firstName)!")
-            } else {
-                return .send("Hello, \(gender == "male" ? "Mr." : "Mrs.") \(surname)")
-            }
-        }
-    }
-
     var content: some Component {
-        Group("swift") {
-            TraditionalGreeter()
-                .serviceName("GreetService")
-                .rpcName("greetMe")
+        Group("session") {
+            JoinSession()
+                .operation(.create)
+                .rpcName("join")
+            PollSession()
+                .operation(.read)
+                .rpcName("poll")
+        }
+        Group("play") {
+            PlayMove()
         }
     }
 

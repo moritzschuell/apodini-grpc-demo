@@ -1,15 +1,37 @@
 syntax="proto3";
 
-message GreetRequest {
-    string gender = 1;
-    string surname = 2;
-    string name = 3;
+message JoinMessage {
+    int64 userId = 1;
+    string userName = 2;
 }
 
-message GreetResponse {
-    repeated string content = 1;
+message JoinResponse {
+    int64 sessionId = 1;
 }
 
-service GreetService {
-    rpc greetMe(GreetRequest) returns (GreetResponse);
+message PollMessage {
+    int64 sessionId = 1;
+}
+
+message PollResponse {
+    bool ready = 1;
+}
+
+service V1SessionService {
+    rpc join(JoinMessage) returns (JoinResponse);
+    rpc poll(PollMessage) returns (PollResponse);
+}
+
+message MoveMessage {
+    int64 userId = 1;
+    int64 sessionId = 2;
+    int64 position = 3;
+}
+
+message MoveResponse {
+    bool success = 1;
+}
+
+service V1PlayService {
+    rpc playmove(MoveMessage) returns (MoveResponse);
 }
