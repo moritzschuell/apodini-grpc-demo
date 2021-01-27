@@ -2,18 +2,21 @@
 //  ContentView.swift
 //  TicTacToe
 //
-//  Created by Moritz Schüll on 22.01.21.
-//
 
 import SwiftUI
-import NIO
-import GRPC
+import Combine
 
-enum Player: String {
+struct Player {
+    var id: Int32
+    var symbol: Symbol
+    var name: String
+}
+
+enum Symbol: String {
     case circle = "O"
     case cross = "X"
 
-    static prefix func ! (player: Player) -> Player {
+    static prefix func ! (player: Symbol) -> Symbol {
         switch player {
         case .circle: return .cross
         case .cross: return .circle
@@ -21,22 +24,28 @@ enum Player: String {
     }
 }
 
-extension Player: CustomStringConvertible {
+extension Symbol: CustomStringConvertible {
     var description: String { rawValue }
 }
 
+extension Player: CustomStringConvertible {
+    var description: String {
+        "\(name), playing \(symbol)"
+    }
+}
+
 struct Move {
-    let player: Player
+    let player: Symbol
     let position: Int
 }
 
 struct Game {
-    let first: Player = .cross
-    let moves: [Move]
+    var first: Symbol = .cross
+    var moves: [Move]
 }
 
 extension Game {
-    var next: Player {
+    var next: Symbol {
         guard let lastPlayer = moves.last?.player else {
             return first
         }
@@ -50,7 +59,7 @@ extension Game {
         )
     }
 
-    var winner: Player? {
+    var winner: Symbol? {
         let length = (0...2)
 
         let rows = (0...2).map { row in
@@ -98,8 +107,8 @@ extension Game {
 }
 
 extension Game {
-    var board: [Player?] {
-        let board = [Player?](repeating: nil, count: 9)
+    var board: [Symbol?] {
+        let board = [Symbol?](repeating: nil, count: 9)
 
         return moves.reduce(into: board) { (result, move) in
             result[move.position] = move.player
@@ -128,11 +137,47 @@ extension Game: CustomPlaygroundDisplayConvertible {
 
 class Model: ObservableObject {
     @Published var game = Game(moves: [])
+
+    @Published var session: GameSession?
+    @Published var player: Player?
+    @Published var ready: Bool = false
+
+    func joinGame() {
+        self.session = GameSession()
+        session?.join(userName: "Moritz") { joinResponse in
+            if let symbol = Symbol(rawValue: joinResponse.symbol) {
+                DispatchQueue.main.async() {
+                    self.player = Player(id: joinResponse.userID,
+                                         symbol: symbol,
+                                         name: "Moritz")
+                }
+            }
+        }
+    }
+
+    func pollGameState() {
+        session?.poll { state in
+            DispatchQueue.main.async() {
+                if let symbol = Symbol(rawValue: state.lastMove.symbol) {
+                    let lastMove = Move(player: symbol, position: Int(state.lastMove.position))
+                    self.game.moves.append(lastMove)
+                }
+
+                if state.hasTwoPlayers_p &&
+                    state.nextSymbol == self.player?.symbol.rawValue {
+                    self.ready = true
+                } else {
+                    self.ready = false
+                }
+            }
+        }
+    }
 }
 
 extension Model {
     func reset() {
         game = Game(moves: [])
+        joinGame()
     }
 }
 
@@ -142,12 +187,19 @@ enum GameError: String, Error {
 
 extension Model {
     func set(position: Int) throws {
-        guard game.availablePositions.contains(position) else {
+        guard game.availablePositions.contains(position),
+              let playerId = player?.id else {
             throw GameError.positionNotAvailable
         }
 
         let move = Move(player: game.next, position: position)
-        game = Game(moves: game.moves + [move])
+        session?.play(userId: playerId, move: move) { success in
+            if success {
+                DispatchQueue.main.async() {
+                    self.game = Game(moves: self.game.moves + [move])
+                }
+            }
+        }
     }
 }
 
@@ -172,16 +224,25 @@ struct Board: View {
         VStack {
             infoText
 
-            gameBoard
-                .disabled(model.game.winner != nil)
-                .alert(isPresented: presentError) {
-                    let message = gameError.map { Text($0.rawValue) }
+            if model.ready {
+                gameBoard
+                    .disabled(model.game.winner != nil)
+                    .alert(isPresented: presentError) {
+                        let message = gameError.map { Text($0.rawValue) }
 
-                    return Alert(
-                        title: Text("Error"),
-                        message: message
-                    )
-                }
+                        return Alert(
+                            title: Text("Error"),
+                            message: message
+                        )
+                    }
+            } else {
+                ProgressView()
+                    .onAppear {
+                        Timer.scheduledTimer(withTimeInterval: 3, repeats: true) { t in
+                            model.pollGameState()
+                        }
+                    }
+            }
 
             Button {
                 model.reset()
@@ -190,6 +251,7 @@ struct Board: View {
             }
 
         }
+        .onAppear(perform: model.joinGame)
     }
 }
 
@@ -202,7 +264,11 @@ private extension Board {
         } else {
             switch model.game.winner {
             case .none:
-                Text(String(describing: model.game.next) + " is next")
+                if model.game.next == model.player?.symbol {
+                    Text("You are next")
+                } else {
+                    Text(String(describing: model.game.next) + " is next")
+                }
             case let .some(winner):
                 Text("\(winner.rawValue) won")
                     .foregroundColor(.green)
@@ -217,7 +283,7 @@ private extension Board {
             ForEach(0..<3) { row in
                 VStack {
                     ForEach(0..<3) { column in
-                        Field(player: model.game.board[row * 3 + column])
+                        Field(symbol: model.game.board[row * 3 + column])
                             .onTapGesture(count: 1) {
                                 set(position: row * 3 + column)
                             }
@@ -239,7 +305,7 @@ private extension Board {
 struct Field: View {
     @EnvironmentObject var model: Model
 
-    let player: Player?
+    var symbol: Symbol?
 
     var body: some View {
         ZStack {
@@ -251,52 +317,14 @@ struct Field: View {
                 .foregroundColor(.black)
                 .frame(width: 50, height: 50)
 
-            Text(player?.description ?? "")
+            Text(symbol?.description ?? "")
         }
     }
 }
 
 struct ContentView: View {
-    func startUp() {
-        let address = "localhost"
-        let port = 8080
-
-        let group = MultiThreadedEventLoopGroup(numberOfThreads: 1)
-        defer {
-            try! group.syncShutdownGracefully()
-        }
-
-        let channel = ClientConnection
-            .secure(group: group)
-            .withTLS(certificateVerification: .none)
-            .connect(host: address, port: port)
-
-        let sessionClient = V1SessionServiceClient(channel: channel)
-
-        var joinMessage = JoinMessage()
-        joinMessage.userID = 15
-        joinMessage.userName = "Moritz"
-
-        let request = sessionClient.join(joinMessage)
-        request.response.whenComplete() { result in
-            switch result {
-            case let .success(response):
-                print("Received response: \(response)")
-            case let .failure(error):
-                print("Error during request: \(error)")
-            }
-        }
-
-        do {
-            try request.status.wait()
-        } catch {
-
-        }
-    }
-
     var body: some View {
         Board()
             .environmentObject(Model())
-            .onAppear(perform: startUp)
     }
 }

@@ -11,28 +11,29 @@ enum SessionError: Error {
     case noPartner
 }
 
-enum Field {
+enum Field: String {
     case unset
     case cross
     case circle
 }
 
-struct GameSession {
+class GameSession {
     let id: Int32
     var field: [Field]
     let first: Player
     var second: Player? = nil
     var moves: [Move]
 
+    static var EmptyField: [Field] = [
+        .unset, .unset, .unset,
+        .unset, .unset, .unset,
+        .unset, .unset, .unset
+    ]
     static var OpenSessions: [GameSession] = []
     static var SessionCounter: Int32 = 0
 
     init(id: Int32, first: Player) {
-        field = [
-            .unset, .unset, .unset,
-            .unset, .unset, .unset,
-            .unset, .unset, .unset
-        ]
+        field = Self.EmptyField
         moves = []
         self.first = first
         self.id = id
@@ -51,7 +52,7 @@ struct GameSession {
 
     /// Playes the given move in the current session
     /// - returns: FALSE if the move is not valid, TRUE if it has been played successfully.
-    mutating func play(move: Move) throws -> Bool {
+    func play(move: Move) throws -> Bool {
         // validate move
         if move.position >= field.count || move.position < 0 {
             // field does not exist

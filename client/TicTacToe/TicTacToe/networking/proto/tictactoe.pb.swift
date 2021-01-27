@@ -25,8 +25,6 @@ public struct JoinMessage {
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  public var userID: Int32 = 0
-
   public var userName: String = String()
 
   public var unknownFields = SwiftProtobuf.UnknownStorage()
@@ -39,7 +37,11 @@ public struct JoinResponse {
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
+  public var userID: Int32 = 0
+
   public var sessionID: Int32 = 0
+
+  public var symbol: String = String()
 
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -58,16 +60,43 @@ public struct PollMessage {
   public init() {}
 }
 
+public struct FieldState {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  public var position: Int32 = 0
+
+  public var symbol: String = String()
+
+  public var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  public init() {}
+}
+
 public struct PollResponse {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
 
-  public var ready: Bool = false
+  public var hasTwoPlayers_p: Bool = false
+
+  public var nextSymbol: String = String()
+
+  public var lastMove: FieldState {
+    get {return _lastMove ?? FieldState()}
+    set {_lastMove = newValue}
+  }
+  /// Returns true if `lastMove` has been explicitly set.
+  public var hasLastMove: Bool {return self._lastMove != nil}
+  /// Clears the value of `lastMove`. Subsequent reads from it will return its default value.
+  public mutating func clearLastMove() {self._lastMove = nil}
 
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
   public init() {}
+
+  fileprivate var _lastMove: FieldState? = nil
 }
 
 public struct MoveMessage {
@@ -103,8 +132,7 @@ public struct MoveResponse {
 extension JoinMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = "JoinMessage"
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "userId"),
-    2: .same(proto: "userName"),
+    1: .same(proto: "userName"),
   ]
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -113,25 +141,20 @@ extension JoinMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementati
       // allocates stack space for every case branch when no optimizations are
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
-      case 1: try { try decoder.decodeSingularInt32Field(value: &self.userID) }()
-      case 2: try { try decoder.decodeSingularStringField(value: &self.userName) }()
+      case 1: try { try decoder.decodeSingularStringField(value: &self.userName) }()
       default: break
       }
     }
   }
 
   public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if self.userID != 0 {
-      try visitor.visitSingularInt32Field(value: self.userID, fieldNumber: 1)
-    }
     if !self.userName.isEmpty {
-      try visitor.visitSingularStringField(value: self.userName, fieldNumber: 2)
+      try visitor.visitSingularStringField(value: self.userName, fieldNumber: 1)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   public static func ==(lhs: JoinMessage, rhs: JoinMessage) -> Bool {
-    if lhs.userID != rhs.userID {return false}
     if lhs.userName != rhs.userName {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
@@ -141,7 +164,9 @@ extension JoinMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementati
 extension JoinResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = "JoinResponse"
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "sessionId"),
+    1: .same(proto: "userId"),
+    2: .same(proto: "sessionId"),
+    3: .same(proto: "symbol"),
   ]
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -150,21 +175,31 @@ extension JoinResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementat
       // allocates stack space for every case branch when no optimizations are
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
-      case 1: try { try decoder.decodeSingularInt32Field(value: &self.sessionID) }()
+      case 1: try { try decoder.decodeSingularInt32Field(value: &self.userID) }()
+      case 2: try { try decoder.decodeSingularInt32Field(value: &self.sessionID) }()
+      case 3: try { try decoder.decodeSingularStringField(value: &self.symbol) }()
       default: break
       }
     }
   }
 
   public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if self.userID != 0 {
+      try visitor.visitSingularInt32Field(value: self.userID, fieldNumber: 1)
+    }
     if self.sessionID != 0 {
-      try visitor.visitSingularInt32Field(value: self.sessionID, fieldNumber: 1)
+      try visitor.visitSingularInt32Field(value: self.sessionID, fieldNumber: 2)
+    }
+    if !self.symbol.isEmpty {
+      try visitor.visitSingularStringField(value: self.symbol, fieldNumber: 3)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   public static func ==(lhs: JoinResponse, rhs: JoinResponse) -> Bool {
+    if lhs.userID != rhs.userID {return false}
     if lhs.sessionID != rhs.sessionID {return false}
+    if lhs.symbol != rhs.symbol {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -202,10 +237,11 @@ extension PollMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementati
   }
 }
 
-extension PollResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  public static let protoMessageName: String = "PollResponse"
+extension FieldState: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = "FieldState"
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "ready"),
+    1: .same(proto: "position"),
+    2: .same(proto: "symbol"),
   ]
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -214,21 +250,70 @@ extension PollResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementat
       // allocates stack space for every case branch when no optimizations are
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
-      case 1: try { try decoder.decodeSingularBoolField(value: &self.ready) }()
+      case 1: try { try decoder.decodeSingularInt32Field(value: &self.position) }()
+      case 2: try { try decoder.decodeSingularStringField(value: &self.symbol) }()
       default: break
       }
     }
   }
 
   public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if self.ready != false {
-      try visitor.visitSingularBoolField(value: self.ready, fieldNumber: 1)
+    if self.position != 0 {
+      try visitor.visitSingularInt32Field(value: self.position, fieldNumber: 1)
+    }
+    if !self.symbol.isEmpty {
+      try visitor.visitSingularStringField(value: self.symbol, fieldNumber: 2)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  public static func ==(lhs: FieldState, rhs: FieldState) -> Bool {
+    if lhs.position != rhs.position {return false}
+    if lhs.symbol != rhs.symbol {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension PollResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = "PollResponse"
+  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "hasTwoPlayers"),
+    2: .same(proto: "nextSymbol"),
+    3: .same(proto: "lastMove"),
+  ]
+
+  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularBoolField(value: &self.hasTwoPlayers_p) }()
+      case 2: try { try decoder.decodeSingularStringField(value: &self.nextSymbol) }()
+      case 3: try { try decoder.decodeSingularMessageField(value: &self._lastMove) }()
+      default: break
+      }
+    }
+  }
+
+  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if self.hasTwoPlayers_p != false {
+      try visitor.visitSingularBoolField(value: self.hasTwoPlayers_p, fieldNumber: 1)
+    }
+    if !self.nextSymbol.isEmpty {
+      try visitor.visitSingularStringField(value: self.nextSymbol, fieldNumber: 2)
+    }
+    if let v = self._lastMove {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 3)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   public static func ==(lhs: PollResponse, rhs: PollResponse) -> Bool {
-    if lhs.ready != rhs.ready {return false}
+    if lhs.hasTwoPlayers_p != rhs.hasTwoPlayers_p {return false}
+    if lhs.nextSymbol != rhs.nextSymbol {return false}
+    if lhs._lastMove != rhs._lastMove {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

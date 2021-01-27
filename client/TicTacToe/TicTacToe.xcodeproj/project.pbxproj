@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3621C83525C1CD6100F428D4 /* GameSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3621C83425C1CD6100F428D4 /* GameSession.swift */; };
 		36E1CFAE25BB3C66000EE9E0 /* TicTacToeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E1CFAD25BB3C66000EE9E0 /* TicTacToeApp.swift */; };
 		36E1CFB025BB3C66000EE9E0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E1CFAF25BB3C66000EE9E0 /* ContentView.swift */; };
 		36E1CFB225BB3C69000EE9E0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36E1CFB125BB3C69000EE9E0 /* Assets.xcassets */; };
@@ -37,6 +38,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3621C83425C1CD6100F428D4 /* GameSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSession.swift; sourceTree = "<group>"; };
 		36E1CFAA25BB3C66000EE9E0 /* TicTacToe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TicTacToe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		36E1CFAD25BB3C66000EE9E0 /* TicTacToeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicTacToeApp.swift; sourceTree = "<group>"; };
 		36E1CFAF25BB3C66000EE9E0 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -80,6 +82,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3621C83325C1CD4400F428D4 /* proto */ = {
+			isa = PBXGroup;
+			children = (
+				36E1CFE525BCB21F000EE9E0 /* tictactoe.grpc.swift */,
+				36E1CFE425BCB21F000EE9E0 /* tictactoe.pb.swift */,
+				36E1CFDF25BCB1E5000EE9E0 /* tictactoe.proto */,
+			);
+			path = proto;
+			sourceTree = "<group>";
+		};
 		36E1CFA125BB3C66000EE9E0 = {
 			isa = PBXGroup;
 			children = (
@@ -143,9 +155,8 @@
 		36E1CFDE25BB3FC2000EE9E0 /* networking */ = {
 			isa = PBXGroup;
 			children = (
-				36E1CFE525BCB21F000EE9E0 /* tictactoe.grpc.swift */,
-				36E1CFE425BCB21F000EE9E0 /* tictactoe.pb.swift */,
-				36E1CFDF25BCB1E5000EE9E0 /* tictactoe.proto */,
+				3621C83325C1CD4400F428D4 /* proto */,
+				3621C83425C1CD6100F428D4 /* GameSession.swift */,
 			);
 			path = networking;
 			sourceTree = "<group>";
@@ -296,6 +307,7 @@
 				36E1CFE725BCB21F000EE9E0 /* tictactoe.grpc.swift in Sources */,
 				36E1CFE625BCB21F000EE9E0 /* tictactoe.pb.swift in Sources */,
 				36E1CFAE25BB3C66000EE9E0 /* TicTacToeApp.swift in Sources */,
+				3621C83525C1CD6100F428D4 /* GameSession.swift in Sources */,
 				36E1CFE025BCB1E6000EE9E0 /* tictactoe.proto in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

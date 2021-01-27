@@ -23,6 +23,8 @@ struct Player {
     let symbol: Symbol
     let id: Int32
     let name: String
+
+    public static var RegisteredPlayers: [Player] = []
 }
 
 extension Player: Equatable {

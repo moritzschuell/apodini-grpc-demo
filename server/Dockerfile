@@ -1,4 +1,4 @@
-FROM swift:latest AS builder
+FROM swift:5.3 AS builder
 WORKDIR /server
 COPY . /server
 RUN apt-get update

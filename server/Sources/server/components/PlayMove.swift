@@ -16,10 +16,10 @@ struct PlayMove: Handler {
     @Parameter
     var sessionId: Int32
     @Parameter
-    var position: Int32
+    var position: Int32?
 
     func handle() throws -> Bool {
-        guard var session = GameSession.OpenSessions.first(where: { $0.id == sessionId }) else {
+        guard let session = GameSession.OpenSessions.first(where: { $0.id == sessionId }) else {
             // specified session does not exist
             return false
         }
@@ -27,7 +27,7 @@ struct PlayMove: Handler {
         let player = try session.next()
         if player.id == userId {
             // it's the players turn
-            let move = Move(player: player, position: position)
+            let move = Move(player: player, position: position ?? 0)
             return try session.play(move: move)
         }
         return false
