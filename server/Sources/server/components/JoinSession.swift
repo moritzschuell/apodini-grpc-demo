@@ -1,8 +1,8 @@
 //
-//  SessionHandlers.swift
+//  File.swift
 //  
 //
-//  Created by Moritz Schüll on 24.01.21.
+//  Created by Moritz Schüll on 02.02.21.
 //
 
 import Foundation
@@ -12,17 +12,6 @@ struct RegisteredUser: ResponseTransformable, Codable {
     var userId: Int32
     var sessionId: Int32
     var symbol: String
-}
-
-struct FieldState: ResponseTransformable, Codable {
-    var position: Int32
-    var symbol: String
-}
-
-struct GameState: ResponseTransformable, Codable {
-    var hasTwoPlayers: Bool
-    var nextSymbol: String
-    var lastMove: FieldState
 }
 
 /// Allows a user to join a session.
@@ -63,46 +52,6 @@ struct JoinSession: Handler {
             return RegisteredUser(userId: player.id,
                                   sessionId: session.id,
                                   symbol: player.symbol.rawValue)
-        }
-    }
-}
-
-/// Allows to poll whether the session with the given id has already two players.
-struct PollSession: Handler {
-    @Parameter
-    var sessionId: Int32
-
-    func buildFieldState(from moves: [Move]) -> [FieldState] {
-        moves.map { move in
-            FieldState(position: move.position,
-                       symbol: move.player.symbol.rawValue)
-        }
-    }
-
-    func handle() throws -> GameState {
-        var fieldState = FieldState(position: 0, symbol: "")
-
-        guard let session = GameSession.OpenSessions
-                .first(where: { $0.id == sessionId }) else {
-            // no session with given id exists
-            return GameState(hasTwoPlayers: false,
-                             nextSymbol: Symbol.cross.rawValue,
-                             lastMove: fieldState)
-        }
-
-        // session is ready, if second player is present
-        if session.second == nil {
-            return GameState(hasTwoPlayers: false,
-                             nextSymbol: Symbol.cross.rawValue,
-                             lastMove: fieldState)
-        } else {
-            if let last = session.moves.last {
-                fieldState = FieldState(position: last.position,
-                                        symbol: last.player.symbol.rawValue)
-            }
-            return GameState(hasTwoPlayers: true,
-                             nextSymbol: try session.next().symbol.rawValue,
-                             lastMove: fieldState)
         }
     }
 }

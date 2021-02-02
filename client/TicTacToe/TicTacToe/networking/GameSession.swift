@@ -19,6 +19,7 @@ class GameSession: ObservableObject {
     private let playClient: V1PlayServiceClient
 
     var id: Int32?
+    var userId: Int32?
 
     init() {
         self.group = MultiThreadedEventLoopGroup(numberOfThreads: 1)
@@ -39,6 +40,7 @@ class GameSession: ObservableObject {
         let request = sessionClient.join(joinMessage)
         request.response.whenSuccess { joinResponse in
             self.id = joinResponse.sessionID
+            self.userId = joinResponse.userID
             callback(joinResponse)
         }
         request.response.whenFailure { error in
@@ -47,10 +49,11 @@ class GameSession: ObservableObject {
     }
 
     func poll(_ callback: @escaping (PollResponse) -> Void) {
-        precondition(id != nil, "Session not initialized")
+        precondition(id != nil && userId != nil, "Session not initialized")
 
         var pollMessage = PollMessage()
         pollMessage.sessionID = id!
+        pollMessage.userID = userId!
 
         let request = sessionClient.poll(pollMessage)
         request.response.whenSuccess { pollResponse in
@@ -61,13 +64,12 @@ class GameSession: ObservableObject {
         }
     }
 
-    func play(userId: Int32,
-              move: Move,
+    func play(move: Move,
               _ callback: @escaping (Bool) -> Void) {
-        precondition(id != nil, "Session not initialized")
+        precondition(id != nil && userId != nil, "Session not initialized")
 
         var moveMessage = MoveMessage()
-        moveMessage.userID = userId
+        moveMessage.userID = userId!
         moveMessage.sessionID = id!
         moveMessage.position = Int32(move.position)
 
