@@ -10,10 +10,12 @@ import Foundation
 
 struct GRPCDemoService: Apodini.WebService {
     var content: some Component {
-        Group("session") {
+        Group("join") {
             JoinSession()
                 .operation(.create)
                 .rpcName("join")
+        }
+        Group("poll") {
             PollSession()
                 .operation(.read)
                 .rpcName("poll")
