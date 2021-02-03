@@ -7,7 +7,6 @@ import SwiftUI
 import Combine
 
 struct Player {
-    var id: Int32
     var symbol: Symbol
     var name: String
 }
@@ -141,15 +140,21 @@ class Model: ObservableObject {
     @Published var session: GameSession?
     @Published var player: Player?
     @Published var ready: Bool = false
+    @Published var contraryName: String?
+
+    let userName: String
+
+    init(userName: String) {
+        self.userName = userName
+    }
 
     func joinGame() {
         self.session = GameSession()
-        session?.join(userName: "Moritz") { joinResponse in
+        session?.join(userName: userName) { joinResponse in
             if let symbol = Symbol(rawValue: joinResponse.symbol) {
                 DispatchQueue.main.async() {
-                    self.player = Player(id: joinResponse.userID,
-                                         symbol: symbol,
-                                         name: "Moritz")
+                    self.player = Player(symbol: symbol,
+                                         name: self.userName)
                 }
             }
         }
@@ -163,12 +168,8 @@ class Model: ObservableObject {
                     self.game.moves.append(lastMove)
                 }
 
-                if state.hasTwoPlayers_p &&
-                    state.nextSymbol == self.player?.symbol.rawValue {
-                    self.ready = true
-                } else {
-                    self.ready = false
-                }
+                self.ready = state.hasTwoPlayers_p && state.nextSymbol == self.player?.symbol.rawValue
+                self.contraryName = state.contraryName
             }
         }
     }
@@ -187,13 +188,12 @@ enum GameError: String, Error {
 
 extension Model {
     func set(position: Int) throws {
-        guard game.availablePositions.contains(position),
-              let playerId = player?.id else {
+        guard game.availablePositions.contains(position) else {
             throw GameError.positionNotAvailable
         }
 
         let move = Move(player: game.next, position: position)
-        session?.play(userId: playerId, move: move) { success in
+        session?.play(move: move) { success in
             if success {
                 DispatchQueue.main.async() {
                     self.game = Game(moves: self.game.moves + [move])
@@ -221,7 +221,7 @@ struct Board: View {
     }
 
     var body: some View {
-        VStack {
+        VStack(alignment: .center, spacing: 50) {
             infoText
 
             if model.ready {
@@ -235,7 +235,7 @@ struct Board: View {
                             message: message
                         )
                     }
-            } else {
+            } else if model.game.winner == .none {
                 ProgressView()
                     .onAppear {
                         Timer.scheduledTimer(withTimeInterval: 3, repeats: true) { t in
@@ -267,11 +267,18 @@ private extension Board {
                 if model.game.next == model.player?.symbol {
                     Text("You are next")
                 } else {
-                    Text(String(describing: model.game.next) + " is next")
+                    Text(String(describing: model.game.next) +
+                            " is next\nWaiting for \(model.contraryName ?? "other player")")
+                        .multilineTextAlignment(.center)
                 }
             case let .some(winner):
-                Text("\(winner.rawValue) won")
-                    .foregroundColor(.green)
+                if winner.rawValue == model.player?.symbol.rawValue {
+                    Text("You won")
+                        .foregroundColor(.green)
+                } else {
+                    Text("\(model.contraryName ?? "The other player") won")
+                        .foregroundColor(.green)
+                }
             }
         }
     }
@@ -323,8 +330,29 @@ struct Field: View {
 }
 
 struct ContentView: View {
+    @State var userName: String = ""
+    @State var okPressed: Bool = false
+
     var body: some View {
-        Board()
-            .environmentObject(Model())
+        if userName != "", okPressed {
+            Board()
+                .environmentObject(Model(userName: userName))
+        } else {
+            VStack {
+                Text("Welcome")
+                    .font(.system(size: 40))
+                    .bold()
+            }
+            VStack(alignment: .center, spacing: 30) {
+                Text("User name:")
+                TextField("Your name", text: $userName)
+                    .multilineTextAlignment(.center)
+                Button("Let's play") {
+                    okPressed = true
+                }
+                .disabled(userName == "")
+            }
+            .frame(width: 150, height: 500)
+        }
     }
 }

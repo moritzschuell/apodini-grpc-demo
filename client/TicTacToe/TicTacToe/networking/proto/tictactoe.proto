@@ -12,6 +12,7 @@ message JoinResponse {
 
 message PollMessage {
     int32 sessionId = 1;
+    int32 userId = 2;
 }
 
 message FieldState {
@@ -21,8 +22,9 @@ message FieldState {
 
 message PollResponse {
     bool hasTwoPlayers = 1;
-    string nextSymbol = 2;
-    FieldState lastMove = 3;
+    string contraryName = 2;
+    string nextSymbol = 3;
+    FieldState lastMove = 4;
 }
 
 service V1SessionService {

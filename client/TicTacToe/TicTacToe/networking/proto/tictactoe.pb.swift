@@ -55,6 +55,8 @@ public struct PollMessage {
 
   public var sessionID: Int32 = 0
 
+  public var userID: Int32 = 0
+
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
   public init() {}
@@ -80,6 +82,8 @@ public struct PollResponse {
   // methods supported on all messages.
 
   public var hasTwoPlayers_p: Bool = false
+
+  public var contraryName: String = String()
 
   public var nextSymbol: String = String()
 
@@ -209,6 +213,7 @@ extension PollMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementati
   public static let protoMessageName: String = "PollMessage"
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "sessionId"),
+    2: .same(proto: "userId"),
   ]
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -218,6 +223,7 @@ extension PollMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementati
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularInt32Field(value: &self.sessionID) }()
+      case 2: try { try decoder.decodeSingularInt32Field(value: &self.userID) }()
       default: break
       }
     }
@@ -227,11 +233,15 @@ extension PollMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementati
     if self.sessionID != 0 {
       try visitor.visitSingularInt32Field(value: self.sessionID, fieldNumber: 1)
     }
+    if self.userID != 0 {
+      try visitor.visitSingularInt32Field(value: self.userID, fieldNumber: 2)
+    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   public static func ==(lhs: PollMessage, rhs: PollMessage) -> Bool {
     if lhs.sessionID != rhs.sessionID {return false}
+    if lhs.userID != rhs.userID {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -279,8 +289,9 @@ extension PollResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementat
   public static let protoMessageName: String = "PollResponse"
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "hasTwoPlayers"),
-    2: .same(proto: "nextSymbol"),
-    3: .same(proto: "lastMove"),
+    2: .same(proto: "contraryName"),
+    3: .same(proto: "nextSymbol"),
+    4: .same(proto: "lastMove"),
   ]
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -290,8 +301,9 @@ extension PollResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementat
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularBoolField(value: &self.hasTwoPlayers_p) }()
-      case 2: try { try decoder.decodeSingularStringField(value: &self.nextSymbol) }()
-      case 3: try { try decoder.decodeSingularMessageField(value: &self._lastMove) }()
+      case 2: try { try decoder.decodeSingularStringField(value: &self.contraryName) }()
+      case 3: try { try decoder.decodeSingularStringField(value: &self.nextSymbol) }()
+      case 4: try { try decoder.decodeSingularMessageField(value: &self._lastMove) }()
       default: break
       }
     }
@@ -301,17 +313,21 @@ extension PollResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementat
     if self.hasTwoPlayers_p != false {
       try visitor.visitSingularBoolField(value: self.hasTwoPlayers_p, fieldNumber: 1)
     }
+    if !self.contraryName.isEmpty {
+      try visitor.visitSingularStringField(value: self.contraryName, fieldNumber: 2)
+    }
     if !self.nextSymbol.isEmpty {
-      try visitor.visitSingularStringField(value: self.nextSymbol, fieldNumber: 2)
+      try visitor.visitSingularStringField(value: self.nextSymbol, fieldNumber: 3)
     }
     if let v = self._lastMove {
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 3)
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 4)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   public static func ==(lhs: PollResponse, rhs: PollResponse) -> Bool {
     if lhs.hasTwoPlayers_p != rhs.hasTwoPlayers_p {return false}
+    if lhs.contraryName != rhs.contraryName {return false}
     if lhs.nextSymbol != rhs.nextSymbol {return false}
     if lhs._lastMove != rhs._lastMove {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
