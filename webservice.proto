@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+service V1UserregisterService {
+  rpc registeruser (RegisterUserMessage) returns (UserMessage);
+}
+
+message RegisterUserMessage {
+  string name = 1;
+}
+
+message UserMessage {
+  string name = 1;
+}
