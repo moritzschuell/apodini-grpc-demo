@@ -10,6 +10,12 @@ import Foundation
 
 struct GRPCDemoService: Apodini.WebService {
     var content: some Component {
+//        Group("user") {
+//            UserComponent()
+//        }
+//        Group("lobby") {
+//            LobbyComponent()
+//        }
         Group("session") {
             JoinSession()
                 .operation(.create)
