@@ -15,8 +15,7 @@ class GameSession: ObservableObject {
 
     private let group: MultiThreadedEventLoopGroup
     private let channel: ClientConnection
-    private let sessionClient: V1SessionServiceClient
-    private let playClient: V1PlayServiceClient
+    private let clients: [ObjectIdentifier: GRPCClient]
 
     var id: Int32?
     var userId: Int32?
@@ -27,17 +26,24 @@ class GameSession: ObservableObject {
             .secure(group: group)
             .withTLS(certificateVerification: .none)
             .connect(host: Self.address, port: Self.port)
-        self.sessionClient = V1SessionServiceClient(channel: channel)
-        self.playClient = V1PlayServiceClient(channel: channel)
+        
+        self.clients = [
+            ObjectIdentifier(V1SessionServiceClient.self): V1SessionServiceClient(channel: channel),
+            ObjectIdentifier(V1PlayServiceClient.self): V1PlayServiceClient(channel: channel)
+        ]
     }
 
+    subscript<C>(key: C.Type) -> C {
+        clients[ObjectIdentifier(key.self)] as! C
+    }
+    
     func join(userName: String, _ callback: @escaping (JoinResponse) -> Void) {
         precondition(id == nil, "Session already initialized")
 
         var joinMessage = JoinMessage()
         joinMessage.userName = userName
 
-        let request = sessionClient.join(joinMessage)
+        let request = self[V1SessionServiceClient.self].join(joinMessage)
         request.response.whenSuccess { joinResponse in
             self.id = joinResponse.sessionID
             self.userId = joinResponse.userID
@@ -55,7 +61,7 @@ class GameSession: ObservableObject {
         pollMessage.sessionID = id!
         pollMessage.userID = userId!
 
-        let request = sessionClient.poll(pollMessage)
+        let request = self[V1SessionServiceClient.self].poll(pollMessage)
         request.response.whenSuccess { pollResponse in
             callback(pollResponse)
         }
@@ -73,7 +79,7 @@ class GameSession: ObservableObject {
         moveMessage.sessionID = id!
         moveMessage.position = Int32(move.position)
 
-        let request = playClient.playmove(moveMessage)
+        let request = self[V1PlayServiceClient.self].playmove(moveMessage)
         request.response.whenSuccess { moveResponse in
             callback(moveResponse.success)
         }
