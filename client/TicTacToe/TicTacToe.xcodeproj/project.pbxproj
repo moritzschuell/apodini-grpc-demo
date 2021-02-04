@@ -20,6 +20,8 @@
 		36E1CFE725BCB21F000EE9E0 /* tictactoe.grpc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E1CFE525BCB21F000EE9E0 /* tictactoe.grpc.swift */; };
 		36E1CFF625BE0CF5000EE9E0 /* GRPC in Frameworks */ = {isa = PBXBuildFile; productRef = 36E1CFF525BE0CF5000EE9E0 /* GRPC */; };
 		C0BE590325CB2DAA00C360F1 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BE590225CB2DAA00C360F1 /* Model.swift */; };
+		C0BE592A25CBF8B000C360F1 /* webservice.grpc.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BE592825CBF8B000C360F1 /* webservice.grpc.swift */; };
+		C0BE592B25CBF8B000C360F1 /* webservice.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BE592925CBF8B000C360F1 /* webservice.pb.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +60,8 @@
 		36E1CFE425BCB21F000EE9E0 /* tictactoe.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = tictactoe.pb.swift; sourceTree = "<group>"; };
 		36E1CFE525BCB21F000EE9E0 /* tictactoe.grpc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = tictactoe.grpc.swift; sourceTree = "<group>"; };
 		C0BE590225CB2DAA00C360F1 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		C0BE592825CBF8B000C360F1 /* webservice.grpc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = webservice.grpc.swift; sourceTree = "<group>"; };
+		C0BE592925CBF8B000C360F1 /* webservice.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = webservice.pb.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +93,8 @@
 		3621C83325C1CD4400F428D4 /* proto */ = {
 			isa = PBXGroup;
 			children = (
+				C0BE592825CBF8B000C360F1 /* webservice.grpc.swift */,
+				C0BE592925CBF8B000C360F1 /* webservice.pb.swift */,
 				36E1CFE525BCB21F000EE9E0 /* tictactoe.grpc.swift */,
 				36E1CFE425BCB21F000EE9E0 /* tictactoe.pb.swift */,
 				36E1CFDF25BCB1E5000EE9E0 /* tictactoe.proto */,
@@ -310,12 +316,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				36E1CFB025BB3C66000EE9E0 /* ContentView.swift in Sources */,
+				C0BE592B25CBF8B000C360F1 /* webservice.pb.swift in Sources */,
 				36E1CFE725BCB21F000EE9E0 /* tictactoe.grpc.swift in Sources */,
 				36E1CFE625BCB21F000EE9E0 /* tictactoe.pb.swift in Sources */,
 				36E1CFAE25BB3C66000EE9E0 /* TicTacToeApp.swift in Sources */,
 				367F57B325C9E172006D07EF /* LoginView.swift in Sources */,
 				3621C83525C1CD6100F428D4 /* GameSession.swift in Sources */,
 				36E1CFE025BCB1E6000EE9E0 /* tictactoe.proto in Sources */,
+				C0BE592A25CBF8B000C360F1 /* webservice.grpc.swift in Sources */,
 				C0BE590325CB2DAA00C360F1 /* Model.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
