@@ -10,28 +10,29 @@ import SwiftUI
 
 struct UserLoginView: View {
     @State var userName: String = ""
-    @State var okPressed: Bool = false
+    @State var didConfirmUserName: Bool = false
 
     var body: some View {
-        if userName != "", okPressed {
+        if !userName.isEmpty, didConfirmUserName {
             BoardView()
                 .environmentObject(Model(userName: userName))
         } else {
-            VStack {
-                Text("Welcome")
-                    .font(.system(size: 40))
-                    .bold()
-            }
             VStack(alignment: .center, spacing: 30) {
-                Text("User name:")
+                Text("Welcome")
+                    .font(.largeTitle)
+                    .bold()
+                    .padding()
+                
+                Text("Choose a name:")
                 TextField("Your name", text: $userName)
                     .multilineTextAlignment(.center)
-                Button("Let's play") {
-                    okPressed = true
+                
+                Button("Let's go") {
+                    didConfirmUserName = true
                 }
-                .disabled(userName == "")
+                .disabled(userName.isEmpty)
             }
-            .frame(width: 150, height: 500)
+            .frame(height: 640)
         }
     }
 }
