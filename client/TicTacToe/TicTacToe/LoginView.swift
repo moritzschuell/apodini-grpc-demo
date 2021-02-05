@@ -13,7 +13,7 @@ final class LoginView: View {
 
     var body: some View {
         if let userName = userName {
-            Board()
+            BoardView()
                 .environmentObject(Model(userName: userName))
         } else {
 

@@ -22,6 +22,7 @@
 		C016B81725CD905C001F9CA8 /* LobbyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C016B81625CD905C001F9CA8 /* LobbyListView.swift */; };
 		C016B81C25CD9327001F9CA8 /* LobbyOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C016B81B25CD9327001F9CA8 /* LobbyOverview.swift */; };
 		C016B82125CD94D7001F9CA8 /* LobbyCreationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C016B82025CD94D7001F9CA8 /* LobbyCreationView.swift */; };
+		C016B82B25CD9EF1001F9CA8 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C016B82A25CD9EF1001F9CA8 /* BoardView.swift */; };
 		C0BE590325CB2DAA00C360F1 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BE590225CB2DAA00C360F1 /* Model.swift */; };
 		C0BE592A25CBF8B000C360F1 /* webservice.grpc.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BE592825CBF8B000C360F1 /* webservice.grpc.swift */; };
 		C0BE592B25CBF8B000C360F1 /* webservice.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BE592925CBF8B000C360F1 /* webservice.pb.swift */; };
@@ -65,6 +66,7 @@
 		C016B81625CD905C001F9CA8 /* LobbyListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyListView.swift; sourceTree = "<group>"; };
 		C016B81B25CD9327001F9CA8 /* LobbyOverview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyOverview.swift; sourceTree = "<group>"; };
 		C016B82025CD94D7001F9CA8 /* LobbyCreationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyCreationView.swift; sourceTree = "<group>"; };
+		C016B82A25CD9EF1001F9CA8 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
 		C0BE590225CB2DAA00C360F1 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		C0BE592825CBF8B000C360F1 /* webservice.grpc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = webservice.grpc.swift; sourceTree = "<group>"; };
 		C0BE592925CBF8B000C360F1 /* webservice.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = webservice.pb.swift; sourceTree = "<group>"; };
@@ -191,6 +193,7 @@
 			children = (
 				36E1CFAF25BB3C66000EE9E0 /* ContentView.swift */,
 				C016B82525CD984E001F9CA8 /* LobbySubsystem */,
+				C016B82925CD9EDE001F9CA8 /* TicTacToeSubsystem */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -203,6 +206,14 @@
 				C016B82025CD94D7001F9CA8 /* LobbyCreationView.swift */,
 			);
 			path = LobbySubsystem;
+			sourceTree = "<group>";
+		};
+		C016B82925CD9EDE001F9CA8 /* TicTacToeSubsystem */ = {
+			isa = PBXGroup;
+			children = (
+				C016B82A25CD9EF1001F9CA8 /* BoardView.swift */,
+			);
+			path = TicTacToeSubsystem;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -347,6 +358,7 @@
 				36E1CFE625BCB21F000EE9E0 /* tictactoe.pb.swift in Sources */,
 				C016B81725CD905C001F9CA8 /* LobbyListView.swift in Sources */,
 				C016B81C25CD9327001F9CA8 /* LobbyOverview.swift in Sources */,
+				C016B82B25CD9EF1001F9CA8 /* BoardView.swift in Sources */,
 				36E1CFAE25BB3C66000EE9E0 /* TicTacToeApp.swift in Sources */,
 				367F57B325C9E172006D07EF /* LoginView.swift in Sources */,
 				3621C83525C1CD6100F428D4 /* GameSession.swift in Sources */,
