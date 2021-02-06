@@ -1,13 +1,13 @@
 //
-//  LobbyListView.swift
+//  GameListView.swift
 //  TicTacToe
 //
-//  Created by Nityananda on 05.02.21.
+//  Created by Nityananda on 06.02.21.
 //
 
 import SwiftUI
 
-struct LobbyListView: View {
+struct GameListView: View {
     var body: some View {
         List(1..<3) { index in
             cell(index)
@@ -15,7 +15,7 @@ struct LobbyListView: View {
     }
 }
 
-private extension LobbyListView {
+private extension GameListView {
     func cell(_ index: Int) -> some View {
         HStack {
             VStack(alignment: .leading) {
@@ -27,8 +27,9 @@ private extension LobbyListView {
             Spacer()
             
             Button("Join") {
-                print("Joined lobby")
+                print("Joined game")
             }
         }
     }
 }
+

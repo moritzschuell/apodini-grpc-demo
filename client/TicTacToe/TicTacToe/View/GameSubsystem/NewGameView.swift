@@ -1,5 +1,5 @@
 //
-//  LobbyCreationView.swift
+//  NewGameView.swift
 //  TicTacToe
 //
 //  Created by Nityananda on 05.02.21.
@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-struct LobbyCreationView: View {
+struct NewGameView: View {
     var body: some View {
         List {
             Button {
-                print("Create lobby")
+                print("New game")
             } label: {
                 HStack {
                     Spacer()
