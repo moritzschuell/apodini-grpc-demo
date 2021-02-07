@@ -12,19 +12,8 @@ import ApodiniProtobuffer
 
 struct GRPCDemoService: Apodini.WebService {
     var content: some Component {
-//        Group("user") {
-//            UserComponent()
-//        }
-//        Group("lobby") {
-//            LobbyComponent()
-//        }
         Group("session") {
-            JoinSession()
-                .operation(.create)
-                .rpcName("join")
-            PollSession()
-                .operation(.read)
-                .rpcName("poll")
+            SessionComponent()
         }
         Group("play") {
             PlayMove()
