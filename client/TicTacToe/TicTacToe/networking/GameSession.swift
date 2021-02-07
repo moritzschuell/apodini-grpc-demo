@@ -28,8 +28,9 @@ class GameSession: ObservableObject {
             .connect(host: Self.address, port: Self.port)
         
         self.clients = [
-            ObjectIdentifier(V1SessionServiceClient.self): V1SessionServiceClient(channel: channel),
-            ObjectIdentifier(V1PlayServiceClient.self): V1PlayServiceClient(channel: channel)
+            .init(V1SessionjoinServiceClient.self): V1SessionjoinServiceClient(channel: channel),
+            .init(V1SessionpollServiceClient.self): V1SessionpollServiceClient(channel: channel),
+            .init(V1PlayServiceClient.self): V1PlayServiceClient(channel: channel)
         ]
     }
 
@@ -37,13 +38,13 @@ class GameSession: ObservableObject {
         clients[ObjectIdentifier(key.self)] as! C
     }
     
-    func join(userName: String, _ callback: @escaping (JoinResponse) -> Void) {
+    func join(userName: String, _ callback: @escaping (RegisteredUserMessage) -> Void) {
         precondition(id == nil, "Session already initialized")
 
-        var joinMessage = JoinMessage()
+        var joinMessage = JoinSessionMessage()
         joinMessage.userName = userName
 
-        let request = self[V1SessionServiceClient.self].join(joinMessage)
+        let request = self[V1SessionjoinServiceClient.self].join(joinMessage)
         request.response.whenSuccess { joinResponse in
             self.id = joinResponse.sessionID
             self.userId = joinResponse.userID
@@ -54,14 +55,14 @@ class GameSession: ObservableObject {
         }
     }
 
-    func poll(_ callback: @escaping (PollResponse) -> Void) {
+    func poll(_ callback: @escaping (GameStateMessage) -> Void) {
         precondition(id != nil && userId != nil, "Session not initialized")
 
-        var pollMessage = PollMessage()
+        var pollMessage = PollSessionMessage()
         pollMessage.sessionID = id!
         pollMessage.userID = userId!
 
-        let request = self[V1SessionServiceClient.self].poll(pollMessage)
+        let request = self[V1SessionpollServiceClient.self].poll(pollMessage)
         request.response.whenSuccess { pollResponse in
             callback(pollResponse)
         }
@@ -74,14 +75,17 @@ class GameSession: ObservableObject {
               _ callback: @escaping (Bool) -> Void) {
         precondition(id != nil && userId != nil, "Session not initialized")
 
-        var moveMessage = MoveMessage()
+        var moveMessage = PlayMoveMessage()
         moveMessage.userID = userId!
         moveMessage.sessionID = id!
-        moveMessage.position = Int32(move.position)
+        var voluntary = VoluntaryOfInt32Message()
+        voluntary.isNone = false
+        voluntary.volunteer = Int32(move.position)
+        moveMessage.position = voluntary
 
         let request = self[V1PlayServiceClient.self].playmove(moveMessage)
         request.response.whenSuccess { moveResponse in
-            callback(moveResponse.success)
+            callback(moveResponse.value)
         }
         request.response.whenFailure { error in
             callback(false)
