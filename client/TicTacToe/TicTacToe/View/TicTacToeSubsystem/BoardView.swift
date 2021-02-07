@@ -42,7 +42,7 @@ struct BoardView: View {
             } else if model.game.winner == .none {
                 ProgressView()
                     .onAppear {
-                        Timer.scheduledTimer(withTimeInterval: 3, repeats: true) { t in
+                        Timer.scheduledTimer(withTimeInterval: 8, repeats: true) { t in
                             model.pollGameState()
                         }
                     }
