@@ -1,13 +1,55 @@
 syntax = "proto3";
 
-service V1UserregisterService {
-  rpc registeruser (RegisterUserMessage) returns (UserMessage);
+service V1PlayService {
+  rpc playmove (PlayMoveMessage) returns (BoolMessage);
 }
 
-message RegisterUserMessage {
-  string name = 1;
+service V1SessionjoinService {
+  rpc join (JoinSessionMessage) returns (RegisteredUserMessage);
 }
 
-message UserMessage {
-  string name = 1;
+service V1SessionpollService {
+  rpc poll (PollSessionMessage) returns (GameStateMessage);
+}
+
+message BoolMessage {
+  bool value = 1;
+}
+
+message FieldStateMessage {
+  int32 position = 1;
+  string symbol = 2;
+}
+
+message GameStateMessage {
+  bool hasTwoPlayers = 1;
+  string contraryName = 2;
+  string nextSymbol = 3;
+  FieldStateMessage lastMove = 4;
+}
+
+message JoinSessionMessage {
+  string userName = 1;
+}
+
+message PlayMoveMessage {
+  int32 userId = 1;
+  int32 sessionId = 2;
+  VoluntaryOfInt32Message position = 3;
+}
+
+message PollSessionMessage {
+  int32 sessionId = 1;
+  int32 userId = 2;
+}
+
+message RegisteredUserMessage {
+  int32 userId = 1;
+  int32 sessionId = 2;
+  string symbol = 3;
+}
+
+message VoluntaryOfInt32Message {
+  bool isNone = 1;
+  int32 volunteer = 2;
 }
