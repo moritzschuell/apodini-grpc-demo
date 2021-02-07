@@ -24,6 +24,10 @@ struct Voluntary<V: Volunteer> {
     static func just(_ v: V) -> Self {
         .init(isNone: false, volunteer: v)
     }
+    
+    static func ?? (lhs: Self, rhs: V) -> V {
+        lhs.isNone ? rhs : lhs.volunteer
+    }
 }
 
 extension Voluntary: Encodable where V: Encodable {}
