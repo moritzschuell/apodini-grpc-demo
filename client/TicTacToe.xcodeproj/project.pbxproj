@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3621C83525C1CD6100F428D4 /* GameSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3621C83425C1CD6100F428D4 /* GameSession.swift */; };
+		3621C83525C1CD6100F428D4 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3621C83425C1CD6100F428D4 /* Session.swift */; };
 		367F57B325C9E172006D07EF /* UserLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367F57B225C9E172006D07EF /* UserLoginView.swift */; };
 		36E1CFAE25BB3C66000EE9E0 /* TicTacToeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E1CFAD25BB3C66000EE9E0 /* TicTacToeApp.swift */; };
 		36E1CFB025BB3C66000EE9E0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E1CFAF25BB3C66000EE9E0 /* ContentView.swift */; };
@@ -19,6 +19,7 @@
 		C00182D225D194E800007D8F /* FieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00182D125D194E800007D8F /* FieldView.swift */; };
 		C016B82B25CD9EF1001F9CA8 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C016B82A25CD9EF1001F9CA8 /* BoardView.swift */; };
 		C074F43225D196EC0090ED98 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C074F43125D196EC0090ED98 /* GameView.swift */; };
+		C074F44725D1A5E60090ED98 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = C074F44625D1A5E60090ED98 /* Game.swift */; };
 		C0BE590325CB2DAA00C360F1 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BE590225CB2DAA00C360F1 /* Model.swift */; };
 		C0BE592A25CBF8B000C360F1 /* webservice.grpc.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BE592825CBF8B000C360F1 /* webservice.grpc.swift */; };
 		C0BE592B25CBF8B000C360F1 /* webservice.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BE592925CBF8B000C360F1 /* webservice.pb.swift */; };
@@ -42,7 +43,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		3621C83425C1CD6100F428D4 /* GameSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSession.swift; sourceTree = "<group>"; };
+		3621C83425C1CD6100F428D4 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		367F57B225C9E172006D07EF /* UserLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLoginView.swift; sourceTree = "<group>"; };
 		36E1CFAA25BB3C66000EE9E0 /* TicTacToe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TicTacToe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		36E1CFAD25BB3C66000EE9E0 /* TicTacToeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicTacToeApp.swift; sourceTree = "<group>"; };
@@ -59,6 +60,7 @@
 		C00182D125D194E800007D8F /* FieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldView.swift; sourceTree = "<group>"; };
 		C016B82A25CD9EF1001F9CA8 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
 		C074F43125D196EC0090ED98 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
+		C074F44625D1A5E60090ED98 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		C0BE590225CB2DAA00C360F1 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		C0BE592825CBF8B000C360F1 /* webservice.grpc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = webservice.grpc.swift; sourceTree = "<group>"; };
 		C0BE592925CBF8B000C360F1 /* webservice.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = webservice.pb.swift; sourceTree = "<group>"; };
@@ -206,8 +208,9 @@
 		C074F43C25D1A3FB0090ED98 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				3621C83425C1CD6100F428D4 /* GameSession.swift */,
+				3621C83425C1CD6100F428D4 /* Session.swift */,
 				C0BE590225CB2DAA00C360F1 /* Model.swift */,
+				C074F44625D1A5E60090ED98 /* Game.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -353,7 +356,8 @@
 				C016B82B25CD9EF1001F9CA8 /* BoardView.swift in Sources */,
 				36E1CFAE25BB3C66000EE9E0 /* TicTacToeApp.swift in Sources */,
 				367F57B325C9E172006D07EF /* UserLoginView.swift in Sources */,
-				3621C83525C1CD6100F428D4 /* GameSession.swift in Sources */,
+				C074F44725D1A5E60090ED98 /* Game.swift in Sources */,
+				3621C83525C1CD6100F428D4 /* Session.swift in Sources */,
 				C0BE592A25CBF8B000C360F1 /* webservice.grpc.swift in Sources */,
 				C074F43225D196EC0090ED98 /* GameView.swift in Sources */,
 				C0BE590325CB2DAA00C360F1 /* Model.swift in Sources */,
