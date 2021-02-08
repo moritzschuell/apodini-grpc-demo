@@ -35,7 +35,7 @@ message JoinSessionMessage {
 message PlayMoveMessage {
   int32 userId = 1;
   int32 sessionId = 2;
-  VoluntaryOfInt32Message position = 3;
+  int32 position = 3;
 }
 
 message PollSessionMessage {
@@ -47,9 +47,4 @@ message RegisteredUserMessage {
   int32 userId = 1;
   int32 sessionId = 2;
   string symbol = 3;
-}
-
-message VoluntaryOfInt32Message {
-  bool isNone = 1;
-  int32 volunteer = 2;
 }

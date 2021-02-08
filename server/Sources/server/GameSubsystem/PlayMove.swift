@@ -8,10 +8,6 @@
 import Foundation
 import Apodini
 
-extension Int32: Volunteer {
-    static var refuse: Int32 { 0 }
-}
-
 /// Allows the user to play a move.
 /// Returns TRUE if the move was played successfully, false otherwise
 struct PlayMove: Handler {
@@ -20,7 +16,7 @@ struct PlayMove: Handler {
     @Parameter
     var sessionId: Int32
     @Parameter
-    var position: Voluntary<Int32>
+    var position: Int32
 
     func handle() throws -> Bool {
         guard let session = GameSession.OpenSessions.first(where: { $0.id == sessionId }) else {
@@ -31,7 +27,7 @@ struct PlayMove: Handler {
         let player = try session.next()
         if player.id == userId {
             // it's the players turn
-            let move = Move(player: player, position: position.volunteer - 1)
+            let move = Move(player: player, position: position - 1)
             return try session.play(move: move)
         }
         return false

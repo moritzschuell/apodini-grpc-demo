@@ -94,20 +94,11 @@ struct PlayMoveMessage {
 
   var sessionID: Int32 = 0
 
-  var position: VoluntaryOfInt32Message {
-    get {return _position ?? VoluntaryOfInt32Message()}
-    set {_position = newValue}
-  }
-  /// Returns true if `position` has been explicitly set.
-  var hasPosition: Bool {return self._position != nil}
-  /// Clears the value of `position`. Subsequent reads from it will return its default value.
-  mutating func clearPosition() {self._position = nil}
+  var position: Int32 = 0
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
-
-  fileprivate var _position: VoluntaryOfInt32Message? = nil
 }
 
 struct PollSessionMessage {
@@ -134,20 +125,6 @@ struct RegisteredUserMessage {
   var sessionID: Int32 = 0
 
   var symbol: String = String()
-
-  var unknownFields = SwiftProtobuf.UnknownStorage()
-
-  init() {}
-}
-
-struct VoluntaryOfInt32Message {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
-
-  var isNone: Bool = false
-
-  var volunteer: Int32 = 0
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -324,7 +301,7 @@ extension PlayMoveMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageImplemen
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularInt32Field(value: &self.userID) }()
       case 2: try { try decoder.decodeSingularInt32Field(value: &self.sessionID) }()
-      case 3: try { try decoder.decodeSingularMessageField(value: &self._position) }()
+      case 3: try { try decoder.decodeSingularInt32Field(value: &self.position) }()
       default: break
       }
     }
@@ -337,8 +314,8 @@ extension PlayMoveMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageImplemen
     if self.sessionID != 0 {
       try visitor.visitSingularInt32Field(value: self.sessionID, fieldNumber: 2)
     }
-    if let v = self._position {
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 3)
+    if self.position != 0 {
+      try visitor.visitSingularInt32Field(value: self.position, fieldNumber: 3)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
@@ -346,7 +323,7 @@ extension PlayMoveMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageImplemen
   static func ==(lhs: PlayMoveMessage, rhs: PlayMoveMessage) -> Bool {
     if lhs.userID != rhs.userID {return false}
     if lhs.sessionID != rhs.sessionID {return false}
-    if lhs._position != rhs._position {return false}
+    if lhs.position != rhs.position {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -429,44 +406,6 @@ extension RegisteredUserMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageIm
     if lhs.userID != rhs.userID {return false}
     if lhs.sessionID != rhs.sessionID {return false}
     if lhs.symbol != rhs.symbol {return false}
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
-extension VoluntaryOfInt32Message: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = "VoluntaryOfInt32Message"
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "isNone"),
-    2: .same(proto: "volunteer"),
-  ]
-
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 1: try { try decoder.decodeSingularBoolField(value: &self.isNone) }()
-      case 2: try { try decoder.decodeSingularInt32Field(value: &self.volunteer) }()
-      default: break
-      }
-    }
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if self.isNone != false {
-      try visitor.visitSingularBoolField(value: self.isNone, fieldNumber: 1)
-    }
-    if self.volunteer != 0 {
-      try visitor.visitSingularInt32Field(value: self.volunteer, fieldNumber: 2)
-    }
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: VoluntaryOfInt32Message, rhs: VoluntaryOfInt32Message) -> Bool {
-    if lhs.isNone != rhs.isNone {return false}
-    if lhs.volunteer != rhs.volunteer {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
