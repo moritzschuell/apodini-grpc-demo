@@ -8,7 +8,7 @@ let package = Package(
         .macOS(.v10_15)
     ],
     dependencies: [
-        .package(url: "https://github.com/Apodini/Apodini.git", .branch("develop"))
+        .package(url: "https://github.com/Apodini/Apodini.git", .branch("demo-grpc"))
     ],
     targets: [
         .target(
