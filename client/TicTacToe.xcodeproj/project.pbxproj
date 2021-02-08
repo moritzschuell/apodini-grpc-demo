@@ -90,13 +90,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3621C83325C1CD4400F428D4 /* proto */ = {
+		3621C83325C1CD4400F428D4 /* Proto */ = {
 			isa = PBXGroup;
 			children = (
 				C0BE592825CBF8B000C360F1 /* webservice.grpc.swift */,
 				C0BE592925CBF8B000C360F1 /* webservice.pb.swift */,
 			);
-			path = proto;
+			path = Proto;
 			sourceTree = "<group>";
 		};
 		36E1CFA125BB3C66000EE9E0 = {
@@ -123,10 +123,10 @@
 		36E1CFAC25BB3C66000EE9E0 /* TicTacToe */ = {
 			isa = PBXGroup;
 			children = (
-				36E1CFDE25BB3FC2000EE9E0 /* networking */,
 				36E1CFAD25BB3C66000EE9E0 /* TicTacToeApp.swift */,
-				C0BE590225CB2DAA00C360F1 /* Model.swift */,
+				C074F43C25D1A3FB0090ED98 /* Model */,
 				C016B81525CD901C001F9CA8 /* View */,
+				3621C83325C1CD4400F428D4 /* Proto */,
 				36E1CFB125BB3C69000EE9E0 /* Assets.xcassets */,
 				36E1CFB625BB3C69000EE9E0 /* Info.plist */,
 				36E1CFB325BB3C69000EE9E0 /* Preview Content */,
@@ -158,15 +158,6 @@
 				36E1CFCC25BB3C69000EE9E0 /* Info.plist */,
 			);
 			path = TicTacToeUITests;
-			sourceTree = "<group>";
-		};
-		36E1CFDE25BB3FC2000EE9E0 /* networking */ = {
-			isa = PBXGroup;
-			children = (
-				3621C83325C1CD4400F428D4 /* proto */,
-				3621C83425C1CD6100F428D4 /* GameSession.swift */,
-			);
-			path = networking;
 			sourceTree = "<group>";
 		};
 		36E1CFF425BE0CF5000EE9E0 /* Frameworks */ = {
@@ -210,6 +201,15 @@
 				367F57B225C9E172006D07EF /* UserLoginView.swift */,
 			);
 			path = UserSubsystem;
+			sourceTree = "<group>";
+		};
+		C074F43C25D1A3FB0090ED98 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				3621C83425C1CD6100F428D4 /* GameSession.swift */,
+				C0BE590225CB2DAA00C360F1 /* Model.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
