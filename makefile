@@ -1,6 +1,6 @@
 .PHONY: all clean generate
 
-all: client/TicTacToe/TicTacToe/networking/proto/webservice.grpc.swift client/TicTacToe/TicTacToe/networking/proto/webservice.pb.swift
+all: client/TicTacToe/networking/proto/webservice.grpc.swift client/TicTacToe/networking/proto/webservice.pb.swift
 
 webservice.proto:
 	curl \
@@ -16,15 +16,15 @@ webservice.grpc.swift webservice.pb.swift: webservice.proto
 		--grpc-swift_out=. \
 		webservice.proto
 
-client/TicTacToe/TicTacToe/networking/proto/webservice.grpc.swift: webservice.grpc.swift
-	mv webservice.grpc.swift client/TicTacToe/TicTacToe/networking/proto/webservice.grpc.swift
+client/TicTacToe/networking/proto/webservice.grpc.swift: webservice.grpc.swift
+	mv webservice.grpc.swift client/TicTacToe/networking/proto/webservice.grpc.swift
 
-client/TicTacToe/TicTacToe/networking/proto/webservice.pb.swift: webservice.pb.swift
-	mv webservice.pb.swift client/TicTacToe/TicTacToe/networking/proto/webservice.pb.swift
+client/TicTacToe/networking/proto/webservice.pb.swift: webservice.pb.swift
+	mv webservice.pb.swift client/TicTacToe/networking/proto/webservice.pb.swift
 
 ###
 
 clean:
 	rm webservice.proto & \
-	rm client/TicTacToe/TicTacToe/networking/proto/webservice.grpc.swift & \
-	rm client/TicTacToe/TicTacToe/networking/proto/webservice.pb.swift
+	rm client/TicTacToe/networking/proto/webservice.grpc.swift & \
+	rm client/TicTacToe/networking/proto/webservice.pb.swift
