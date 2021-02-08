@@ -9,8 +9,11 @@ import Foundation
 import SwiftUI
 
 struct UserLoginView: View {
-    @State var userName: String = ""
-    @State var didConfirmUserName: Bool = false
+    @State
+    private var userName: String = ""
+    
+    @State
+    private var didConfirmUserName: Bool = false
 
     var body: some View {
         if !userName.isEmpty, didConfirmUserName {

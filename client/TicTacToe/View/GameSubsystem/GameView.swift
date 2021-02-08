@@ -8,22 +8,9 @@
 import SwiftUI
 
 struct GameView: View {
-    @EnvironmentObject var model: Model
-
-    @State var gameError: GameError?
-
-    var presentError: Binding<Bool> {
-        .init { () -> Bool in
-            gameError != nil
-        } set: { (newValue) in
-            let dismissError = !newValue
-            guard dismissError else {
-                return
-            }
-            gameError = nil
-        }
-    }
-
+    @EnvironmentObject
+    private var model: Model
+    
     var body: some View {
         VStack(alignment: .center, spacing: 50) {
             infoText
@@ -31,14 +18,6 @@ struct GameView: View {
             if model.ready {
                 BoardView()
                     .disabled(model.game.winner != nil)
-                    .alert(isPresented: presentError) {
-                        let message = gameError.map { Text($0.rawValue) }
-
-                        return Alert(
-                            title: Text("Error"),
-                            message: message
-                        )
-                    }
             } else if model.game.winner == .none {
                 ProgressView()
                     .onAppear {
