@@ -17,7 +17,7 @@ struct UserLoginView: View {
 
     var body: some View {
         if !userName.isEmpty, didConfirmUserName {
-            BoardView()
+            GameView()
                 .environmentObject(Model(userName: userName))
         } else {
             VStack(alignment: .center, spacing: 30) {
