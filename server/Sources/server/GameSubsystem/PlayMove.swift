@@ -31,7 +31,7 @@ struct PlayMove: Handler {
         let player = try session.next()
         if player.id == userId {
             // it's the players turn
-            let move = Move(player: player, position: position ?? 0)
+            let move = Move(player: player, position: position.volunteer - 1)
             return try session.play(move: move)
         }
         return false

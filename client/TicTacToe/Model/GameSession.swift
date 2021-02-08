@@ -80,7 +80,7 @@ class GameSession: ObservableObject {
         moveMessage.sessionID = id!
         var voluntary = VoluntaryOfInt32Message()
         voluntary.isNone = false
-        voluntary.volunteer = Int32(move.position)
+        voluntary.volunteer = Int32(move.position + 1)
         moveMessage.position = voluntary
 
         let request = self[V1PlayServiceClient.self].playmove(moveMessage)
