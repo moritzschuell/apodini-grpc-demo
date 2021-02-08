@@ -97,7 +97,7 @@ class Session: ObservableObject {
         moveMessage.sessionID = id
         var voluntary = VoluntaryOfInt32Message()
         voluntary.isNone = false
-        voluntary.volunteer = Int32(move.position)
+        voluntary.volunteer = Int32(move.position + 1)
         moveMessage.position = voluntary
 
         self[V1PlayServiceClient.self]
