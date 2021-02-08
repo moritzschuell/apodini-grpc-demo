@@ -45,22 +45,21 @@ private extension GameView {
             Text("It is a draw")
                 .foregroundColor(.orange)
         } else {
-            switch model.game.winner {
-            case .none:
-                if model.game.next == model.player?.symbol {
-                    Text("You are next")
-                } else {
-                    Text(String(describing: model.game.next) +
-                            " is next\nWaiting for \(model.contraryName ?? "other player")")
-                        .multilineTextAlignment(.center)
-                }
-            case let .some(winner):
+            if let winner = model.game.winner {
                 if winner.rawValue == model.player?.symbol.rawValue {
                     Text("You won")
                         .foregroundColor(.green)
                 } else {
                     Text("\(model.contraryName ?? "The other player") won")
                         .foregroundColor(.green)
+                }
+            } else {
+                if model.game.next == model.player?.symbol {
+                    Text("You are next")
+                } else {
+                    Text(String(describing: model.game.next) +
+                            " is next\nWaiting for \(model.contraryName ?? "other player")")
+                        .multilineTextAlignment(.center)
                 }
             }
         }
